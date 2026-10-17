@@ -31,3 +31,8 @@ dist-ssr
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+
+# Local environment files
+.env
+# Generated test coverage
+server/coverage/
