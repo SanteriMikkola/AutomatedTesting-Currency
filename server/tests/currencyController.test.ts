@@ -2,6 +2,8 @@ import { afterEach, describe, expect, test, vi } from 'vitest'
 import { convertAmount } from '../controllers/currencyController'
 import * as currencyService from '../services/currencyService'
 
+vi.mock('../services/currencyService')
+
 const createMockResponse = () => {
   const res: any = {}
   res.status = vi.fn().mockReturnThis()
@@ -10,15 +12,17 @@ const createMockResponse = () => {
 }
 
 afterEach(() => {
-  vi.restoreAllMocks()
+  vi.clearAllMocks()
+  vi.resetAllMocks()
 })
 
 describe('CurrencyController.convertAmount', () => {
   test('Return conversion with valid request', async () => {
-    vi.spyOn(currencyService, 'convert').mockResolvedValue({ amount: 9 })
-
     const req: any = { body: { from: 'EUR', to: 'SEK', amount: 10 } }
     const res = createMockResponse()
+
+    const payload = { amount: 9 }
+    vi.mocked(currencyService.convert).mockResolvedValue(payload)
 
     await convertAmount(req, res)
 
